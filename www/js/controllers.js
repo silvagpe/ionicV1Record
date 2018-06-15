@@ -109,13 +109,13 @@ angular.module('starter.controllers', [])
 
   })
 
-  .controller('PlaylistsCtrl', function ($scope) {
+  .controller('PlaylistsCtrl', function ($scope, helperService) {
 
     $scope.txtBtnGravando = "Gravar";
     $scope.mediaRec = null;
     $scope.audioFireBase = null;
 
-    $scope.onCamera =function(){
+    $scope.onCamera = function () {
       navigator.camera.getPicture(onSuccess, onFail, {
         quality: 50,
         destinationType: Camera.DestinationType.FILE_URI
@@ -131,7 +131,7 @@ angular.module('starter.controllers', [])
       }
     }
 
-    $scope.onTocarAudio = function(){
+    $scope.onTocarAudio = function () {
       var url = "https://firebasestorage.googleapis.com/v0/b/zortea-chat-app.appspot.com/o/AeroSmith%20-%20The%20Other%20Side.mp3?alt=media&token=dddb7d2e-8c9c-4411-a004-7d9f6d4cf675";
       console.log('Iniciando player');
 
@@ -157,13 +157,11 @@ angular.module('starter.controllers', [])
       }
     }
 
-    $scope.onPararAudio = function()
-    {
+    $scope.onPararAudio = function () {
       $scope.audioFireBase.stop();
     }
 
-    $scope.onGravar1 = function()
-    {
+    $scope.onGravar1 = function () {
       recordAudio();
     }
 
@@ -198,8 +196,7 @@ angular.module('starter.controllers', [])
 
     };
 
-    $scope.onTouch = function()
-    {
+    $scope.onTouch = function () {
       mediaRec.play();
     }
 
@@ -209,7 +206,7 @@ angular.module('starter.controllers', [])
 
       console.log("recordAudio");
 
-      var src = cordova.file.externalCacheDirectory +  "/myrecsound.3gp";
+      var src = helperService.dirCache() + "myrecsound.3gp";
 
       var mediaRec = new Media(src,
         // success callback
