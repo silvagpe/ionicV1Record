@@ -109,7 +109,7 @@ angular.module('starter.controllers', [])
 
   })
 
-  .controller('PlaylistsCtrl', function ($scope, helperService) {
+  .controller('PlaylistsCtrl', function ($scope, helperService, recordService) {
 
     $scope.txtBtnGravando = "Gravar";
     $scope.mediaRec = null;
@@ -206,6 +206,11 @@ angular.module('starter.controllers', [])
 
       console.log("recordAudio");
 
+      var objMedia =  recordService.newRecord(null, null);
+
+      console.log(objMedia);
+      /*
+
       var src = helperService.dirCache() + "myrecsound.3gp";
 
       var mediaRec = new Media(src,
@@ -218,25 +223,27 @@ angular.module('starter.controllers', [])
         function (err) {
           console.log("recordAudio():Audio Error: " + err.code);
         });
+      */
+
 
       // Record audio
-      mediaRec.startRecord();
+      objMedia.mediaRec.startRecord();
       console.log("recordAudio - stated");
 
       // Pause Recording after 5 seconds
       setTimeout(function () {
-        mediaRec.pauseRecord();
+        objMedia.mediaRec.pauseRecord();
         console.log("recordAudio - paused");
       }, 5000);
 
       // Resume Recording after 10 seconds
       setTimeout(function () {
-        mediaRec.stopRecord();
+        objMedia.mediaRec.stopRecord();
         console.log("recordAudio - stopped");
       }, 7000);
 
       setTimeout(function () {
-        mediaRec.play();
+        objMedia.mediaRec.play();
         console.log("recordAudio - played");
       }, 9000);
     }
