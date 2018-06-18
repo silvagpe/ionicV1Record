@@ -1,0 +1,26 @@
+<ion-view view-title="Home">
+  <ion-content>
+    <button class="button button-block button-positive" on-touch="onCamera()" >
+      Camera
+    </button>
+
+    <button class="button button-block button-positive" on-touch="onPlayStopAudioFirabase()" >
+      {{tocando ? 'Para' : 'Tocar'}} audio firebase
+    </button>
+
+    <button class="button button-block button-positive" on-touch="onGravar1()" >
+      Gravar teste 1
+    </button>
+
+
+    <button class="button button-block button-positive" on-hold="onHold()" on-release="onRelease()">
+      {{txtBtnGravando}}
+    </button>
+
+    <button class="button button-block button-positive" on-touch="onTouch()">
+      Tocar
+    </button>
+
+    <p><img id="myImage" style="width: 100%"></p>
+  </ion-content>
+</ion-view>

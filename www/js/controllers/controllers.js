@@ -1,5 +1,4 @@
-angular.module('starter.controllers', [])
-
+starter_controllers_module
   .controller('AppCtrl', function ($scope, $ionicModal, $timeout) {
 
     // With the new view caching in Ionic, Controllers are only called
