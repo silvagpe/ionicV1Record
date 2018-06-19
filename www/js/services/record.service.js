@@ -12,7 +12,7 @@ starter_services_module
 
       try {
         switch (cordova.platformId) {
-          case "android": return "m4a";
+          case "android": return "mp3";
           case "ios": return "m4a";
         }
       } catch (error) {
