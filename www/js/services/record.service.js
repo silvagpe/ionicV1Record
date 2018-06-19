@@ -5,6 +5,7 @@ starter_services_module
     srv.currentPlayMedia = {
       media: null,
       playing: false,
+      src : ''
     };
 
     this.recordExtension = function () {
@@ -33,12 +34,11 @@ starter_services_module
      */
     this.newRecord = function (sucessoCallback, errorCallback) {
 
-      var retorno = {};
+      srv.currentPlayMedia = srv.newCurrentPlayMeda(true);
 
       try {
-        retorno.src = srv.newFileRecord();
-        retorno.mediaRec = new Media(
-          retorno.src,
+        srv.currentPlayMedia.media = new Media(
+          srv.currentPlayMedia.src,
           // success callback
           function () {
             console.log("recordAudio():Audio Success");
@@ -53,26 +53,27 @@ starter_services_module
 
           });
       } catch (error) {
-        console.log("newRecord: ", error);
+        console.warn("newRecord: ", error);
       }
 
-      return retorno;
+      return srv.currentPlayMedia;
     }
 
-    this.playRecord = function (src, newAudio) {
+    this.playRecord = function (src, newAudio, newFile) {
 
       var deferred = $q.defer();
 
-      console.log('Iniciando player');
 
-      if (newAudio && srv.currentPlayMedia.media != null) {
-        srv.currentPlayMedia.media.stop();
-        srv.currentPlayMedia.media.release();
+      if (newAudio) {
+        srv.currentPlayMedia = srv.newCurrentPlayMeda(true);
       }
 
       try {
 
         if (srv.currentPlayMedia.media == null) {
+
+          console.log('Iniciando Media');
+
           srv.currentPlayMedia.media = new Media(src,
 
             // success callback
@@ -90,7 +91,7 @@ starter_services_module
         playAudioFirebase(deferred);
 
       } catch (error) {
-        console.log('Erro ao iniciar o player ', error.message);
+        console.log('playRecord: Erro ao iniciar o player ', error.message);
         deferred.reject('Media não carregada ou nula');
       }
 
@@ -100,6 +101,24 @@ starter_services_module
 
     this.getCurrentPlayMedia =function()
     {
+      return srv.currentPlayMedia;
+    }
+
+    this.newCurrentPlayMeda = function(newFile){
+
+      if (srv.currentPlayMedia == null){
+        srv.currentPlayMedia = {};
+      }
+
+      if (srv.currentPlayMedia.media != null) {
+        srv.currentPlayMedia.media.stop();
+        srv.currentPlayMedia.media.release();
+      }
+
+      srv.currentPlayMedia.media = null;
+      srv.currentPlayMedia.playing = false;
+      srv.currentPlayMedia.src = newFile ? srv.newFileRecord() : "";
+
       return srv.currentPlayMedia;
     }
 

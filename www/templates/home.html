@@ -1,24 +1,29 @@
 <ion-view view-title="Home">
   <ion-content>
     <button class="button button-block button-positive" on-touch="onCamera()" >
-      Camera
+      Camera - ok
     </button>
 
     <button class="button button-block button-positive" on-touch="onPlayStopAudioFirabase()" >
-      {{tocando ? 'Para' : 'Tocar'}} audio firebase
+      {{tocando ? 'Para' : 'Tocar'}} audio firebase - ok
     </button>
 
-    <button class="button button-block button-positive" on-touch="onGravar1()" >
-      Gravar teste 1
+    <button class="button button-block button-positive"
+      on-hold="onRecordHolder()"
+      on-release="onRecordRelease()">
+      {{gravando ? 'Gravando...' : 'Gravar'}}
     </button>
 
-
-    <button class="button button-block button-positive" on-hold="onHold()" on-release="onRelease()">
-      {{txtBtnGravando}}
+    <button class="button button-block button-positive" on-touch="onPlayRecord()" >
+      Reproduzir gravação
     </button>
 
-    <button class="button button-block button-positive" on-touch="onTouch()">
-      Tocar
+    <button class="button button-block button-positive" on-touch="onPlayM4A()" >
+      Reproduzir gravação M4A
+    </button>
+
+    <button class="button button-block button-positive" on-touch="onPlay3GP()" >
+      Reproduzir gravação 3GP
     </button>
 
     <p><img id="myImage" style="width: 100%"></p>
