@@ -12,7 +12,7 @@ starter_services_module
 
       try {
         switch (cordova.platformId) {
-          case "android": return "3gp";
+          case "android": return "m4a";
           case "ios": return "m4a";
         }
       } catch (error) {
@@ -59,7 +59,7 @@ starter_services_module
       return srv.currentPlayMedia;
     }
 
-    this.playRecord = function (src, newAudio, newFile) {
+    this.playRecord = function (src, newAudio) {
 
       var deferred = $q.defer();
 

@@ -132,7 +132,7 @@ starter_controllers_module
         console.log("The loading indicator is now displayed");
       });
 
-      var url = "https://firebasestorage.googleapis.com/v0/b/ionic-firebase-chat-silva.appspot.com/o/testea_android.3gp?alt=media&token=97a34dc8-8ba8-4c5f-84ba-d0e9dda00d92";
+      var url = "https://firebasestorage.googleapis.com/v0/b/ionic-firebase-chat-silva.appspot.com/o/teste_android.m4a?alt=media&token=dc1537e2-4081-42c0-a416-d3c6fe9f903c";
       recordService.playRecord(url, true)
         .then(
           function (result) {
