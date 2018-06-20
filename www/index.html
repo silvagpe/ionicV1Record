@@ -22,6 +22,26 @@
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-messaging.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyC9gvJpOcttJx02qlZXqEmXsbPfYG97hOw",
+        authDomain: "zortea-chat-app.firebaseapp.com",
+        databaseURL: "https://zortea-chat-app.firebaseio.com",
+        projectId: "zortea-chat-app",
+        storageBucket: "zortea-chat-app.appspot.com",
+        messagingSenderId: "873434958475"
+      };
+      firebase.initializeApp(config);
+    </script>
+
 
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
@@ -35,6 +55,7 @@
     <script src="js/services/starter.services.module.js"></script>
     <script src="js/services/helper.service.js"></script>
     <script src="js/services/record.service.js"></script>
+    <script src="js/services/firebase.service.js"></script>
     <!-- Controllers -->
     <script src="js/controllers/starter.controllers.module.js"></script>
     <script src="js/controllers/home.controller.js"></script>

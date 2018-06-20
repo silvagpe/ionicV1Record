@@ -1,5 +1,5 @@
 starter_controllers_module
-  .controller('HomeCtrl', function ($scope, $ionicLoading, recordService, $timeout) {
+  .controller('HomeCtrl', function ($scope, $ionicLoading, recordService, $timeout, firebaseService) {
 
     $scope.audioFirebase = null;
     $scope.tocando = false;
@@ -49,7 +49,7 @@ starter_controllers_module
           function (error) {
             console.warn(error);
 
-            $timeout(function(){
+            $timeout(function () {
               $ionicLoading.hide().then(function () {
                 console.log("The loading indicator is now hidden");
               });
@@ -58,36 +58,45 @@ starter_controllers_module
           });
     }
 
-    $scope.onRecordHolder = function(){
+    $scope.onRecordHolder = function () {
 
       $scope.gravando = true;
       console.log("Gravando...");
 
       $scope.record = recordService.newRecord(
-        function() {console.log("record sucesso");},
-        function(error) {console.log("Erro record", error);}
+        function () { console.log("record sucesso"); },
+        function (error) { console.log("Erro record", error); }
       )
 
       var record = recordService.getCurrentPlayMedia();
-      if (record.media != null)
-      {
+      if (record.media != null) {
         record.media.startRecord();
       }
     }
 
-    $scope.onRecordRelease = function(){
+    $scope.onRecordRelease = function () {
 
+
+      //file:///storage/emulated/0/Android/data/br.inf.grsti.ionicV1Record/cache/589dfeb7-451d-43a3-922b-6b33ada3135d.mp3
       $scope.gravando = false;
       console.log("Parando...");
 
       var record = recordService.getCurrentPlayMedia();
-      if (record.media != null)
-      {
+      if (record.media != null) {
         record.media.stopRecord();
+
+        var reader = new FileReader();
+
+        reader.onloadend = function() {
+            console.log("Successful file read: " + this.result);
+            displayFileData(fileEntry.fullPath + ": " + this.result);
+        };
+
+        reader.readAsText(file);
       }
     }
 
-    $scope.onPlayRecord = function(){
+    $scope.onPlayRecord = function () {
       console.log("Reproduzindo gravação");
 
       recordService.playRecord();
@@ -96,7 +105,7 @@ starter_controllers_module
     }
 
 
-    $scope.onPlayM4A = function(){
+    $scope.onPlayM4A = function () {
       $ionicLoading.show({
         template: 'Loading...'
       }).then(function () {
@@ -116,7 +125,7 @@ starter_controllers_module
           function (error) {
             console.warn(error);
 
-            $timeout(function(){
+            $timeout(function () {
               $ionicLoading.hide().then(function () {
                 console.log("The loading indicator is now hidden");
               });
@@ -125,7 +134,7 @@ starter_controllers_module
           });
     }
 
-    $scope.onPlay3GP = function(){
+    $scope.onPlay3GP = function () {
       $ionicLoading.show({
         template: 'Loading...'
       }).then(function () {
@@ -145,13 +154,44 @@ starter_controllers_module
           function (error) {
             console.warn(error);
 
-            $timeout(function(){
+            $timeout(function () {
               $ionicLoading.hide().then(function () {
                 console.log("The loading indicator is now hidden");
               });
             }, 1000)
 
           });
+    }
+
+
+    $scope.onFirebaseTest = function () {
+
+      //firebaseService.createUserWithEmailAndPassword("silvagpe@gmail.com", "123123");
+
+      firebaseService.signInWithEmailAndPassword("silvagpe@gmail.com", "123123");
+
+
+      /*var user =  firebaseService.getCurrentFirebaseUser();
+      console.log(user);
+      */
+
+      //console.log(firebase);
+    }
+
+    $scope.onFirebaseLogout = function () {
+      firebaseService.signOut();
+    }
+
+    $scope.onFirebaseChangePass = function(){
+
+      firebaseService.changePassword("123123")
+      .then(
+        function (result) {
+          console.log(result);
+        })
+      .catch(function(result){
+        console.log(result);
+      });
     }
 
   }

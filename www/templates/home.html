@@ -1,10 +1,10 @@
 <ion-view view-title="Home">
   <ion-content>
-    <button class="button button-block button-positive" on-touch="onCamera()" >
+    <button class="button button-block button-positive" ng-click="onCamera()" >
       Camera - ok
     </button>
 
-    <button class="button button-block button-positive" on-touch="onPlayStopAudioFirabase()" >
+    <button class="button button-block button-positive" ng-click="onPlayStopAudioFirabase()" >
       {{tocando ? 'Para' : 'Tocar'}} audio firebase - ok
     </button>
 
@@ -14,16 +14,28 @@
       {{gravando ? 'Gravando...' : 'Gravar'}}
     </button>
 
-    <button class="button button-block button-positive" on-touch="onPlayRecord()" >
+    <button class="button button-block button-positive" ng-click="onPlayRecord()" >
       Reproduzir gravação
     </button>
 
-    <button class="button button-block button-positive" on-touch="onPlayM4A()" >
+    <button class="button button-block button-positive" ng-click="onPlayM4A()" >
       Reproduzir gravação M4A
     </button>
 
-    <button class="button button-block button-positive" on-touch="onPlay3GP()" >
+    <button class="button button-block button-positive" ng-click="onPlay3GP()" >
       Reproduzir gravação 3GP
+    </button>
+
+    <button class="button button-block button-positive" ng-click="onFirebaseTest()" >
+      Firebase login
+    </button>
+
+    <button class="button button-block button-positive" ng-click="onFirebaseLogout()" >
+      Firebase logout
+    </button>
+
+    <button class="button button-block button-positive" ng-click="onFirebaseChangePass()" >
+      Firebase change password
     </button>
 
     <p><img id="myImage" style="width: 100%"></p>
