@@ -1,5 +1,5 @@
 starter_services_module
-  .service("firebaseService", function ($q) {
+  .service("firebaseService", function ($q, fileService) {
 
     var srv = this;
 
@@ -139,7 +139,25 @@ starter_services_module
     }
 
 
-    this.uploadFile = function () {
+    this.uploadFileMedia = function (mediaFile) {
+
+      fileService.readFileBase64(mediaFile.src)
+        .then(function (result) {
+
+          var storageRef = firebase.storage().ref();
+          var audioRef = storageRef.child('audios');
+
+          var fileNameAudio = mediaFile.file;
+          var fileAudioRef = audioRef.child(fileNameAudio);
+
+          fileAudioRef.putString(result, 'data_url').then(function (snapshot) {
+            console.log('Uploaded a data_url string!', snapshot);
+          });
+
+        })
+        .catch(srv.firebaseErros);
+
+      /*
 
       var storageRef = firebase.storage().ref();
       var imagesRef = storageRef.child('images');
@@ -148,6 +166,7 @@ starter_services_module
       var path = spaceRef.fullPath;
       var name = spaceRef.name;
       var imagesRef = spaceRef.parent;
+      */
     }
 
   });

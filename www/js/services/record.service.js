@@ -5,7 +5,8 @@ starter_services_module
     srv.currentPlayMedia = {
       media: null,
       playing: false,
-      src : ''
+      src : '',
+      file : ''
     };
 
     this.recordExtension = function () {
@@ -21,12 +22,17 @@ starter_services_module
       }
     }
 
+    /**
+     * Retona a estrutura de diretorio e arquivo para novas gravações
+     */
     this.newFileRecord = function () {
-      var filePath = helperService.dirCache();
-      filePath += helperService.newGuid();
-      filePath += "." + srv.recordExtension();
 
-      return filePath;
+      var result = {};
+      result.dir = helperService.dirCache();
+      result.file =  helperService.newGuid() + "." + srv.recordExtension();
+      result.src = result.dir + result.file
+
+      return result;
     }
 
     /**
@@ -117,7 +123,12 @@ starter_services_module
 
       srv.currentPlayMedia.media = null;
       srv.currentPlayMedia.playing = false;
-      srv.currentPlayMedia.src = newFile ? srv.newFileRecord() : "";
+
+      if (newFile){
+        var filePath = srv.newFileRecord();
+        srv.currentPlayMedia.src = filePath.src;
+        srv.currentPlayMedia.file = filePath.file;
+      }
 
       return srv.currentPlayMedia;
     }

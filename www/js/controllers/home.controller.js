@@ -76,8 +76,6 @@ starter_controllers_module
 
     $scope.onRecordRelease = function () {
 
-
-      //file:///storage/emulated/0/Android/data/br.inf.grsti.ionicV1Record/cache/589dfeb7-451d-43a3-922b-6b33ada3135d.mp3
       $scope.gravando = false;
       console.log("Parando...");
 
@@ -85,14 +83,7 @@ starter_controllers_module
       if (record.media != null) {
         record.media.stopRecord();
 
-        var reader = new FileReader();
-
-        reader.onloadend = function() {
-            console.log("Successful file read: " + this.result);
-            displayFileData(fileEntry.fullPath + ": " + this.result);
-        };
-
-        reader.readAsText(file);
+        firebaseService.uploadFileMedia(record);
       }
     }
 
@@ -101,8 +92,57 @@ starter_controllers_module
 
       recordService.playRecord();
 
+    }
+
+
+    $scope.onFirebaseUploadImage = function () {
+
+      console.log("Iniciando upload");
+
+      readFile();
+      // var reader = new FileReader();
+
+      // reader.onloadend = function () {
+      //   console.log("Successful file read: " + this.result);
+      //   displayFileData(fileEntry.fullPath + ": " + this.result);
+      // };
+
+      // reader.readAsText(file);
 
     }
+
+    function readFile() {
+
+      //https://www.tutorialspoint.com/cordova/cordova_file_system.htm
+
+      var type = LocalFileSystem.PERSISTENT;
+      var size = 5 * 1024 * 1024;
+      window.requestFileSystem(type, size, successCallback, errorCallback)
+
+      function successCallback(fs) {
+
+        fs.root.getFile("teste.mp3", {}, function (fileEntry) {
+
+          fileEntry.file(function (file) {
+            var reader = new FileReader();
+
+            reader.onloadend = function (e) {
+              var txtArea = document.getElementById('textarea');
+              txtArea.value = this.result;
+            };
+            reader.readAsText(file);
+          }, errorCallback);
+        }, errorCallback);
+      }
+
+      function errorCallback(error) {
+
+        console.log(error);
+
+        alert("ERROR: " + error.code)
+      }
+    }
+
 
 
     $scope.onPlayM4A = function () {
@@ -182,16 +222,16 @@ starter_controllers_module
       firebaseService.signOut();
     }
 
-    $scope.onFirebaseChangePass = function(){
+    $scope.onFirebaseChangePass = function () {
 
       firebaseService.changePassword("123123")
-      .then(
-        function (result) {
+        .then(
+          function (result) {
+            console.log(result);
+          })
+        .catch(function (result) {
           console.log(result);
-        })
-      .catch(function(result){
-        console.log(result);
-      });
+        });
     }
 
   }
