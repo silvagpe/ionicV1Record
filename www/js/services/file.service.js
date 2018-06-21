@@ -27,10 +27,12 @@ starter_services_module
           };
 
           reader.readAsDataURL(file);
-        }, function (error) { erroReadFileBase64(error, deferred, filePath); });
-      }, function (error) { erroReadFileBase64(error, deferred, filePath); });
+        }, function (error) { erroReadFileBase64(error, deferred, filePath, 'fileEntry'); });
+      }, function (error) { erroReadFileBase64(error, deferred, filePath, 'resolveLocalFileSystemURL'); });
 
-      function erroReadFileBase64(error, deferred, filePath) {
+      function erroReadFileBase64(error, deferred, filePath, errorLevel) {
+        console.log(errorLevel);
+
         srv.errorHandler(error, filePath);
         deferred.reject('fileService erro to read file');
       }
