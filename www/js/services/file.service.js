@@ -60,7 +60,7 @@ starter_services_module
           msg = 'Read error -  The file or directory cannot be read, typically due to permission problems that occur after a reference to a file has been acquired (for example, the file or directory is concurrently locked by another application).';
           break;
         case FileError.ENCODING_ERR: //5
-          msg = 'URL malformad - The URL is malformed. Make sure that the URL is complete and valid.';
+          msg = 'URL malformed - The URL is malformed. Make sure that the URL is complete and valid.';
           break;
         case FileError.NO_MODIFICATION_ALLOWED_ERR: //6
           msg = 'Write error - The state of the underlying file system prevents any writing to a file or a directory.';
