@@ -40,6 +40,38 @@ starter_services_module
       return deferred.promise;
     }
 
+    this.readFileIOs = function (filePath) {
+
+      var deferred = $q.defer();
+
+      window.requestFileSystem(window.TEMPORARY, 5 * 1024 * 1024, function (fs) {
+
+        console.log('file system open: ' + fs.name);
+        fs.root.getFile(filePath, {}, function (fileEntry) {
+
+          fileEntry.file(function (file) {
+            var reader = new FileReader();
+
+            reader.onloadend = function () {
+              deferred.resolve(this.result);
+            };
+
+            reader.readAsDataURL(file);
+
+          }, function (error) { erroReadFileIOS(error, deferred, filePath, 'fileEntry'); });
+        }, function (error) { erroReadFileIOS(error, deferred, filePath, 'getFile'); });
+      }, function (error) { erroReadFileIOS(error, deferred, filePath, 'requestFileSystem'); });
+
+      function erroReadFileIOS(error, deferred, filePath, errorLevel) {
+        console.log(errorLevel);
+
+        srv.errorHandler(error, filePath);
+        deferred.reject('fileService erro to read file');
+      }
+
+      return deferred.promise;
+    }
+
 
     /**
      * Documentação: https://developer.mozilla.org/en-US/docs/Web/API/FileError

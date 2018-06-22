@@ -132,6 +132,9 @@ starter_services_module
           break;
         case "auth/user-not-found": console.log("Usuário não localiado ou excluído. ", error);
           break;
+        case "storage/invalid-argument": console.log("Storage: Argumento invalido", error);
+          break;
+
         default: console.log(error);
 
           break;
@@ -141,7 +144,8 @@ starter_services_module
 
     this.uploadFileMedia = function (mediaFile) {
 
-      fileService.readFileBase64(mediaFile.src)
+
+      fileService.readFileIOs(mediaFile.src)
         .then(function (result) {
 
           var storageRef = firebase.storage().ref();
@@ -159,14 +163,23 @@ starter_services_module
 
       /*
 
-      var storageRef = firebase.storage().ref();
-      var imagesRef = storageRef.child('images');
-      var fileName = 'space.jpg';
-      var spaceRef = imagesRef.child(fileName);
-      var path = spaceRef.fullPath;
-      var name = spaceRef.name;
-      var imagesRef = spaceRef.parent;
-      */
+      fileService.readFileBase64(mediaFile.src)
+        .then(function (result) {
+
+          var storageRef = firebase.storage().ref();
+          var audioRef = storageRef.child('audios');
+
+          var fileNameAudio = mediaFile.file;
+          var fileAudioRef = audioRef.child(fileNameAudio);
+
+          fileAudioRef.putString(result, 'data_url').then(function (snapshot) {
+            console.log('Uploaded a data_url string!', snapshot);
+          });
+
+        })
+        .catch(srv.firebaseErros);
+    */
+
     }
 
   });

@@ -9,7 +9,9 @@ starter_services_module
     try {
       switch (cordova.platformId) {
         case "android": return cordova.file.externalCacheDirectory;
-        case "ios": return "";
+        //case "ios": return cordova.file.cacheDirectory;
+        //case "ios": return "documents://";
+        case "ios" : "";
       }
     } catch (error) {
       console.log("dirCache: ", error);
