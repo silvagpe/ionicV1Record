@@ -4,10 +4,90 @@ starter_services_module
     var srv = this;
 
     /**
+     * Le um arquivo e devolve em base 64
+     * @param {string} filePath Caminho do arquivo conforme a plataforma
+     */
+    this.readFileBase64 = function(filePath)
+    {
+      var deferred = $q.defer();
+
+      switch (cordova.platformId) {
+        case "android": readFileBase64_reolveLocalSystemURL(filePath, deferred);
+        case "ios" : readFileBase64_requestFileSystem(filePath, deferred);
+        default: deferred.reject('Plataforma não localizada');
+        break;
+      }
+
+      return deferred.promise;
+    }
+
+    /**
+     * Controle de erro geral
+     * @param {Error} error Classe de erro padrão do JS
+     * @param {defer} deferred Promessa de retorno
+     * @param {string} filePath Caminho do arquivo
+     * @param {stirng} errorLevel Caminho do erro
+     */
+    function erroReadFile(error, deferred, filePath, errorLevel) {
+      console.log("Error lendo o arquivo método: "+  errorLevel);
+      srv.errorHandler(error, filePath);
+      deferred.reject('fileService erro to read file');
+
+    }
+
+    /**
+     * Carrega um arquivo usando um caminho de URL - usado no ANDROID
+     * @param {string} filePath Caminho do arquivo
+     * @param {defer} deferred Promessa de retorno
+     */
+    function readFileBase64_reolveLocalSystemURL(filePath, deferred) {
+
+      window.resolveLocalFileSystemURL(filePath, function (fileEntry) {
+        fileEntry.file(function (file) {
+          var reader = new FileReader();
+
+          reader.onloadend = function (e) {
+            deferred.resolve(this.result);
+          };
+
+          reader.readAsDataURL(file);
+        }, function (error) { erroReadFile(error, deferred, filePath, 'readFileBase64_reolveLocalSystemURL > fileEntry'); });
+      }, function (error) { erroReadFile(error, deferred, filePath, 'readFileBase64_reolveLocalSystemURL'); });
+    }
+
+    /**
+     * Carrega um arquivo usando um caminho fisico - usado no IOS
+     * @param {string} filePath Caminho do arquivo
+     * @param {defer} deferred Promessa de retorno
+     */
+    function readFileBase64_requestFileSystem(filePath, deferred) {
+
+      window.requestFileSystem(window.TEMPORARY, 5 * 1024 * 1024, function (fs) {
+
+        console.log('file system open: ' + fs.name);
+        fs.root.getFile(filePath, {}, function (fileEntry) {
+
+          fileEntry.file(function (file) {
+            var reader = new FileReader();
+
+            reader.onloadend = function () {
+              deferred.resolve(this.result);
+            };
+
+            reader.readAsDataURL(file);
+
+          }, function (error) { erroReadFile(error, deferred, filePath, 'readFileBase64_requestFileSystem > getFile > fileEntry'); });
+        }, function (error) { erroReadFile(error, deferred, filePath, 'readFileBase64_requestFileSystem > getFile'); });
+      }, function (error) { erroReadFile(error, deferred, filePath, 'readFileBase64_requestFileSystem'); });
+
+    }
+
+
+    /**
      * Carrega um arquivo local
      * @param {string} filePath Local onde o arquivo está salvo
      */
-    this.readFileBase64 = function (filePath) {
+    this.readFileBase64_1 = function (filePath) {
 
       var deferred = $q.defer();
 
@@ -40,7 +120,7 @@ starter_services_module
       return deferred.promise;
     }
 
-    this.readFileIOs = function (filePath) {
+    this.readFileIOs_old = function (filePath) {
 
       var deferred = $q.defer();
 
@@ -80,6 +160,7 @@ starter_services_module
      */
     this.errorHandler = function (error, filePath) {
 
+      console.log("== File Service Erros ==");
 
       var msg = '';
 

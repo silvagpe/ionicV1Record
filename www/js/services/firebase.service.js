@@ -116,52 +116,7 @@ starter_services_module
       return deferred.promise;
     }
 
-
-    /**
-     * Realiza o tratamento de erros do firebase
-     * @param {object} error
-     */
-    this.firebaseErros = function (error) {
-
-      console.log("== FIREBASE Erros ==");
-
-      switch (error.code) {
-        case "auth/email-already-in-use": console.log(" O endereço de email já está em uso em outra conta. ", error);
-          break;
-        case "auth/wrong-password": console.log("Usuário ou senha inválidos. ", error);
-          break;
-        case "auth/user-not-found": console.log("Usuário não localiado ou excluído. ", error);
-          break;
-        case "storage/invalid-argument": console.log("Storage: Argumento invalido", error);
-          break;
-
-        default: console.log(error);
-
-          break;
-      }
-    }
-
-
     this.uploadFileMedia = function (mediaFile) {
-
-
-      fileService.readFileIOs(mediaFile.src)
-        .then(function (result) {
-
-          var storageRef = firebase.storage().ref();
-          var audioRef = storageRef.child('audios');
-
-          var fileNameAudio = mediaFile.file;
-          var fileAudioRef = audioRef.child(fileNameAudio);
-
-          fileAudioRef.putString(result, 'data_url').then(function (snapshot) {
-            console.log('Uploaded a data_url string!', snapshot);
-          });
-
-        })
-        .catch(srv.firebaseErros);
-
-      /*
 
       fileService.readFileBase64(mediaFile.src)
         .then(function (result) {
@@ -178,8 +133,32 @@ starter_services_module
 
         })
         .catch(srv.firebaseErros);
-    */
 
+    }
+
+
+    /**
+     * Realiza o tratamento de erros do firebase
+     * @param {object} error
+     */
+    this.firebaseErros = function (error) {
+
+      console.log("== FIREBASE Erros ==");
+
+      switch (error.code) {
+        case "auth/email-already-in-use": console.log(" O endereço de email já está em uso em outra conta. ", error);
+          break;
+        case "auth/wrong-password": console.log("Usuário ou senha inválidos. ", error);
+          break;
+        case "auth/user-not-found": console.log("Usuário não localiado ou excluído. ", error);
+          break;
+        case "storage/invalid-argument": console.log("Storage: Argumento inválido ou arquivo vazio", error);
+          break;
+
+        default: console.log(error);
+
+          break;
+      }
     }
 
   });
